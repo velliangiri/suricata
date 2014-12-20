@@ -109,67 +109,50 @@ static void HostBitRemove(Host *h, uint16_t idx)
 
 void HostBitSet(Host *h, uint16_t idx)
 {
-//    HostLock(h);
-
     HostBit *fb = HostBitGet(h, idx);
     if (fb == NULL) {
         HostBitAdd(h, idx);
     }
-
-//    HostUnlock(h);
 }
 
 void HostBitUnset(Host *h, uint16_t idx)
 {
-//    HostLock(h);
-
     HostBit *fb = HostBitGet(h, idx);
     if (fb != NULL) {
         HostBitRemove(h, idx);
     }
-
-//    HostUnlock(h);
 }
 
 void HostBitToggle(Host *h, uint16_t idx)
 {
-//    HostLock(h);
-
     HostBit *fb = HostBitGet(h, idx);
     if (fb != NULL) {
         HostBitRemove(h, idx);
     } else {
         HostBitAdd(h, idx);
     }
-
-//    HostUnlock(h);
 }
 
 int HostBitIsset(Host *h, uint16_t idx)
 {
     int r = 0;
-//    HostLock(h);
 
     HostBit *fb = HostBitGet(h, idx);
     if (fb != NULL) {
         r = 1;
     }
-
-//    HostUnlock(h);
     return r;
 }
 
 int HostBitIsnotset(Host *h, uint16_t idx)
 {
     int r = 0;
-//    HostLock(h);
 
     HostBit *fb = HostBitGet(h, idx);
     if (fb == NULL) {
         r = 1;
     }
 
-//    HostUnlock(h);
     return r;
 }
 
