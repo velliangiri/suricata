@@ -24,10 +24,6 @@
 #include "suricata-common.h"
 #include "ippair.h"
 
-#include "detect-engine-tag.h"
-#include "detect-engine-threshold.h"
-#include "reputation.h"
-
 uint32_t IPPairGetSpareCount(void)
 {
     return IPPairSpareQueueGetSize();
@@ -49,26 +45,12 @@ uint32_t IPPairGetActiveCount(void)
  */
 static int IPPairIPPairTimedOut(IPPair *h, struct timeval *ts)
 {
-//    int tags = 0;
-//    int thresholds = 0;
-
     /** never prune a ippair that is used by a packet
      *  we are currently processing in one of the threads */
     if (SC_ATOMIC_GET(h->use_cnt) > 0) {
         return 0;
     }
-#if 0
-    if (TagIPPairHasTag(h) && TagTimeoutCheck(h, ts) == 0) {
-        tags = 1;
-    }
-    if (ThresholdIPPairHasThreshold(h) && ThresholdTimeoutCheck(h, ts) == 0) {
-        thresholds = 1;
-    }
 
-    if (tags || thresholds)
-        return 0;
-
-#endif
     SCLogDebug("ippair %p timed out", h);
     return 1;
 }
