@@ -109,67 +109,50 @@ static void IPPairBitRemove(IPPair *h, uint16_t idx)
 
 void IPPairBitSet(IPPair *h, uint16_t idx)
 {
-//    IPPairLock(h);
-
     XBit *fb = IPPairBitGet(h, idx);
     if (fb == NULL) {
         IPPairBitAdd(h, idx);
     }
-
-//    IPPairUnlock(h);
 }
 
 void IPPairBitUnset(IPPair *h, uint16_t idx)
 {
-//    IPPairLock(h);
-
     XBit *fb = IPPairBitGet(h, idx);
     if (fb != NULL) {
         IPPairBitRemove(h, idx);
     }
-
-//    IPPairUnlock(h);
 }
 
 void IPPairBitToggle(IPPair *h, uint16_t idx)
 {
-//    IPPairLock(h);
-
     XBit *fb = IPPairBitGet(h, idx);
     if (fb != NULL) {
         IPPairBitRemove(h, idx);
     } else {
         IPPairBitAdd(h, idx);
     }
-
-//    IPPairUnlock(h);
 }
 
 int IPPairBitIsset(IPPair *h, uint16_t idx)
 {
     int r = 0;
-//    IPPairLock(h);
 
     XBit *fb = IPPairBitGet(h, idx);
     if (fb != NULL) {
         r = 1;
     }
-
-//    IPPairUnlock(h);
     return r;
 }
 
 int IPPairBitIsnotset(IPPair *h, uint16_t idx)
 {
     int r = 0;
-//    IPPairLock(h);
 
     XBit *fb = IPPairBitGet(h, idx);
     if (fb == NULL) {
         r = 1;
     }
 
-//    IPPairUnlock(h);
     return r;
 }
 
