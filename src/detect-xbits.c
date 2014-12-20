@@ -104,7 +104,7 @@ static int DetectIPPairbitMatchToggle (Packet *p, DetectXbitsData *fd)
         return 0;
 
     IPPairBitToggle(pair,fd->idx);
-    IPPairUnlock(pair);
+    IPPairRelease(pair);
     return 1;
 }
 
@@ -116,7 +116,7 @@ static int DetectIPPairbitMatchUnset (Packet *p, DetectXbitsData *fd)
         return 1;
 
     IPPairBitUnset(pair,fd->idx);
-    IPPairUnlock(pair);
+    IPPairRelease(pair);
     return 1;
 }
 
@@ -127,7 +127,7 @@ static int DetectIPPairbitMatchSet (Packet *p, DetectXbitsData *fd)
         return 0;
 
     IPPairBitSet(pair,fd->idx);
-    IPPairUnlock(pair);
+    IPPairRelease(pair);
     return 1;
 }
 
@@ -139,7 +139,7 @@ static int DetectIPPairbitMatchIsset (Packet *p, DetectXbitsData *fd)
         return 0;
 
     r = IPPairBitIsset(pair,fd->idx);
-    IPPairUnlock(pair);
+    IPPairRelease(pair);
     return r;
 }
 
@@ -151,7 +151,7 @@ static int DetectIPPairbitMatchIsnotset (Packet *p, DetectXbitsData *fd)
         return 1;
 
     r = IPPairBitIsnotset(pair,fd->idx);
-    IPPairUnlock(pair);
+    IPPairRelease(pair);
     return r;
 }
 
