@@ -142,18 +142,24 @@ static int DetectHostbitMatchUnset (Packet *p, DetectHostbitsData *fd)
 {
     switch (fd->dir) {
         case DETECT_HOSTBITS_DIR_SRC:
-            if (p->host_src == NULL)
-                return 1;
+            if (p->host_src == NULL) {
+                p->host_src = HostLookupHostFromHash(&p->src);
+                if (p->host_src == NULL)
+                    return 1;
+            } else
+                HostLock(p->host_src);
 
-            HostLock(p->host_src);
             HostBitUnset(p->host_src,fd->idx);
             HostUnlock(p->host_src);
             break;
         case DETECT_HOSTBITS_DIR_DST:
-            if (p->host_dst == NULL)
-                return 1;
+            if (p->host_dst == NULL) {
+                p->host_dst = HostLookupHostFromHash(&p->dst);
+                if (p->host_dst == NULL)
+                    return 1;
+            } else
+                HostLock(p->host_dst);
 
-            HostLock(p->host_dst);
             HostBitUnset(p->host_dst,fd->idx);
             HostUnlock(p->host_dst);
             break;
@@ -169,7 +175,6 @@ static int DetectHostbitMatchSet (Packet *p, DetectHostbitsData *fd)
                 p->host_src = HostGetHostFromHash(&p->src);
                 if (p->host_src == NULL)
                     return 0;
-                //SCLogInfo("host added");
             } else
                 HostLock(p->host_src);
 
@@ -181,7 +186,6 @@ static int DetectHostbitMatchSet (Packet *p, DetectHostbitsData *fd)
                 p->host_dst = HostGetHostFromHash(&p->dst);
                 if (p->host_dst == NULL)
                     return 0;
-                //SCLogInfo("host added");
             } else
                 HostLock(p->host_dst);
 
@@ -197,16 +201,24 @@ static int DetectHostbitMatchIsset (Packet *p, DetectHostbitsData *fd)
     int r = 0;
     switch (fd->dir) {
         case DETECT_HOSTBITS_DIR_SRC:
-            if (p->host_src == NULL)
-                return 0;
+            if (p->host_src == NULL) {
+                p->host_src = HostLookupHostFromHash(&p->src);
+                if (p->host_src == NULL)
+                    return 0;
+            } else
+                HostLock(p->host_src);
 
             HostLock(p->host_src);
             r = HostBitIsset(p->host_src,fd->idx);
             HostUnlock(p->host_src);
             return r;
         case DETECT_HOSTBITS_DIR_DST:
-            if (p->host_dst == NULL)
-                return 0;
+            if (p->host_dst == NULL) {
+                p->host_dst = HostLookupHostFromHash(&p->dst);
+                if (p->host_dst == NULL)
+                    return 0;
+            } else
+                HostLock(p->host_dst);
 
             HostLock(p->host_dst);
             r = HostBitIsset(p->host_dst,fd->idx);
@@ -221,16 +233,24 @@ static int DetectHostbitMatchIsnotset (Packet *p, DetectHostbitsData *fd)
     int r = 0;
     switch (fd->dir) {
         case DETECT_HOSTBITS_DIR_SRC:
-            if (p->host_src == NULL)
-                return 1;
+            if (p->host_src == NULL) {
+                p->host_src = HostLookupHostFromHash(&p->src);
+                if (p->host_src == NULL)
+                    return 1;
+            } else
+                HostLock(p->host_src);
 
             HostLock(p->host_src);
             r = HostBitIsnotset(p->host_src,fd->idx);
             HostUnlock(p->host_src);
             return r;
         case DETECT_HOSTBITS_DIR_DST:
-            if (p->host_dst == NULL)
-                return 1;
+            if (p->host_dst == NULL) {
+                p->host_dst = HostLookupHostFromHash(&p->dst);
+                if (p->host_dst == NULL)
+                    return 1;
+            } else
+                HostLock(p->host_dst);
 
             HostLock(p->host_dst);
             r = HostBitIsnotset(p->host_dst,fd->idx);
